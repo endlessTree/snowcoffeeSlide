@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en-KO">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>snowCoffee's_slide</title>
+	<link rel="stylesheet" href="css/reset.css" />
+	<link rel="stylesheet" href="css/snowCoffee's_slide.css" />
+</head>
+<body>
+	
+	<div id="wrap">
+	
+		<div id="slideWrap">
+			<div id="slideInner">
+				<ul class="slide">
+					<li><img src="images/1.jpg" alt="" /></li>
+					<li><img src="images/2.jpg" alt="" /></li>
+					<li><img src="images/3.jpg" alt="" /></li>
+					<li><img src="images/4.jpg" alt="" /></li>
+					<li><img src="images/5.jpg" alt="" /></li>
+					<li><img src="images/1.jpg" alt="" /></li>
+					<li><img src="images/2.jpg" alt="" /></li>
+					<li><img src="images/3.jpg" alt="" /></li>
+					<li><img src="images/4.jpg" alt="" /></li>
+					<li><img src="images/5.jpg" alt="" /></li>
+				</ul>
+				<div class="slideBtn">
+					<p class="btn_l"><a href="#">◀</a></p>
+					<p class="btn_r"><a href="#">▶</a></p>
+				</div>
+				<div class="autoBtn">
+					<p class="btnStart on"><a href="#">▷</a></p>
+					<p class="btnPause"><a href="#">∥</a></p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="paging"></div>
+				
+	</div> <!-- wrap -->
+
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/snowCoffee's_slide.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$.snowCoffee();
+	});
+</script>
+</body>
+</html>

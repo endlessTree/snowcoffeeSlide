@@ -1,0 +1,29 @@
+@charset "utf-8";
+
+
+
+
+#slideWrap{position:relative;margin: 30px auto;overflow:hidden;width:100%;}
+.slide{width:1000000px;text-align:center;}
+.slide{transition:margin-left 0.2s ease-out;-moz-transition:margin-left 0.2s ease-out;-webkit-transition:margin-left 0.2s ease-out;-o-transition:margin-left 0.2s ease-out;}
+.slide li{position:relative;float:left;margin:0 auto;}
+.slide li img{width:100%;}
+.slide:after{content:"";display:block;clear:both;}
+
+.slideBtn{position:absolute;top:50%;left:0;margin-top:-25px;width:100%;height:50px;text-align:center;}
+.slideBtn p{position:absolute;top:0;width:50px;height:50px;line-height:50px;vertical-align:middle;border-radius:25px 25px;background-color:#e27575;}
+.slideBtn p a{display:block;width:100%;height:100%;font-size:25px;color:#fff;}
+.slideBtn .btn_l{left:0;}
+.slideBtn .btn_r{right:0;}
+
+.autoBtn { position: absolute; bottom: 0; left: 0 }
+.autoBtn p { float: left; margin-right: 10px; width: 30px; height: 30px; line-height: 30px; text-align: center }
+.autoBtn p a { display: block; width: 100%; height: 100%; color:#fff; background-color: #8b1549 }
+.autoBtn p a:hover, .autoBtn p a:focus, .autoBtn p.on a { font-weight: bold; background-color: #d86296 }
+
+.paging{width:100%;height:20px;margin-top:20px;text-align:center;}
+.paging ul{display:inline-block;width:auto;}
+.paging li{width:20px;height:20px;float:left;margin:0 5px;border-radius:10px 10px;background-color:#ccc;}
+.paging li:hover, .paging li.choice{background-color:#234563;}
+.paging li a{display:block;width:100%;height:100%;}
+.paging ul:after{content:"";display:block;clear:both;}
