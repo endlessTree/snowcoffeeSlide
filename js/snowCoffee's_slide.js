@@ -6,8 +6,8 @@
 		// 각 요소를 담은 변수 선언
 		var $sWrap = $('#slideWrap');
 		var $sInner = $('#slideInner');
-		var $sWrapUl = $sWrap.find('.slide');
-		var $sLi = $sWrapUl.find('li');
+		var $sWrapUl = $('.slide');
+		var $sLi = $('.slide li');
 
 		// slide에 필요한 갖가지 변수 선언
 		var slide = 0;		// 이미지 사이즈를 marginLeft 이동 값에 계속 더해줄 변수
@@ -23,7 +23,6 @@
 			$sLi.width($sInner.width());		// $('#slideWrap .slide li')
 			$sWrapUl.width($sWrap.width()*(indexLast+1)+200);	// ul.slide의 넓이 값을 slide li의 갯수만큼 넓히기
 		});
-
 
 	/*	함수	*/
 
@@ -74,7 +73,6 @@
 		};
 		$('.paging li').eq(indexNow).addClass('choice');
 		
-
 	/*	이벤트	*/
 
 		// ◀ ▶ 버튼
@@ -99,7 +97,6 @@
 		// 자동 재생 / 정지 버튼
 		$('.autoBtn p').click(function(e){
 			if( $(this).hasClass('btnStart') == true ){
-				$(this).addClass('on');
 				startInterval();
 			}else{
 				stopInterval();
@@ -112,31 +109,34 @@
 		var handle = null;
 		window.onload = function(){
 			startInterval();
-		}
+		};
 		function startInterval(){
 			if( handle == null ){
 				handle=setInterval(function(){
 					toggleSlide();
 				}, slideTime);
-			}
-		}
+			};
+			$('.btnPause').removeClass('on');
+			$('.btnStart').addClass('on');
+		};
 		function stopInterval(){
 			clearInterval(handle);
 			$('.btnStart').removeClass('on');
+			$('.btnPause').addClass('on');
 			handle = null;
-		}
+		};
 		function toggleSlide(){
 			slideLeft();
 			toggle = !toggle;
-		}
+		};
 
 		// 리사이징 후의 이벤트를 위한 함수
 		var waitForFinalEvent = (function () {
 			var timers = {};
 			return function (callback, ms, uniqueId) {
-				if (!uniqueId) {
+				/*if (!uniqueId) {
 					uniqueId = "Don't call this twice without a uniqueId"; //고유한 ID없이 두 번이 호출하지 마십시오
-				}
+				}*/
 				if (timers[uniqueId]) {
 					clearTimeout (timers[uniqueId]);
 				}
@@ -154,9 +154,12 @@
 				$sWrapUl.css('transition','margin-left 0s ease-out 0s');	// 리사이징 될 때 transition 시간 제거
 			};
 
+			stopInterval();
+
 			// 리사이징 끝난 후 이벤트
 			waitForFinalEvent(function(){
 				$sWrapUl.css('transition','margin-left 0.2s ease-out 0s');	// 리사이징 되고난 후에 transition 시간 생성
+				startInterval();
 			}, 200);
 
 		});
