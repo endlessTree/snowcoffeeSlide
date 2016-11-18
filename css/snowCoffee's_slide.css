@@ -23,7 +23,6 @@
 .paging li {width: 20px; height: 20px; float: left; margin: 0 5px; border-radius: 10px 10px; background-color: #ccc }
 .paging li:hover , .paging li.choice {background-color: #234563 }
 .paging li a {display: block; width: 100%; height: 100% }
- {content: ""; display: block; clear: both }
 
 .slide:after, .paging ul:after {content: ""; display: block; clear: both }
 .slideBtn p, .autoBtn p, .paging li { transition: background-color 0.5s ease-out; -moz-transition: background-color 0.5s ease-out; -webkit-transition: background-color 0.5s ease-out; -o-transition: background-color 0.5s ease-out }
