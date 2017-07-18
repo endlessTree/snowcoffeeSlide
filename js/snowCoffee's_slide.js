@@ -14,6 +14,7 @@
 		var indexNow = 0;		// 현재 slide li의 인덱스를 담을 변수
 		var indexLast = $('#slideWrap .slide li:last-child').index(); // slide li의 마지막 index를 담을 변수
 		var imgWidth = '100%'; 	// slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
+		//var imgWidth = '800px'; 	// slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
 		var slideTime = '3000'; // 자동 재생 시간
 
 	/*	리셋	*/
@@ -21,7 +22,7 @@
 		$(window).load(function(){
 			$sWrap.width(imgWidth);		// $('#slideWrap')의 width 값을 imgWidth 값으로 담는다.
 			$sLi.width($sInner.width());		// $('#slideWrap .slide li')
-			$sWrapUl.width($sWrap.width()*(indexLast+1)+200);	// ul.slide의 넓이 값을 slide li의 갯수만큼 넓히기
+			$sWrapUl.width($sWrap.width()*(indexLast+1));	// ul.slide의 넓이 값을 slide li의 갯수만큼 넓히기
 		});
 
 	/*	함수	*/
@@ -72,7 +73,21 @@
 			$('.paging ul').append('<li><a href="#"></a></li>');
 		};
 		$('.paging li').eq(indexNow).addClass('choice');
-		
+
+		// 터치 이벤트
+		$sWrapUl.swipe( {
+			//Generic swipe handler for all directions
+			swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+			  if(direction=="left"){
+					slideLeft();
+				}else if(direction=="right"){
+					slideRight();
+				};
+			},
+			//Default is 75px, set to 0 for demo so any distance triggers swipe
+			 threshold:0
+		});
+			
 	/*	이벤트	*/
 
 		// ◀ ▶ 버튼
