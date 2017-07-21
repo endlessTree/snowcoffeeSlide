@@ -1,7 +1,6 @@
 @charset "utf-8"; 
 
 #slideWrap {position: relative; margin: 0 auto; overflow: hidden; width: 100% }
-.slide {width: 1000000px }
 .slide {transition: margin-left 0.2s ease-out; -moz-transition: margin-left 0.2s ease-out; -webkit-transition: margin-left 0.2s ease-out; -o-transition: margin-left 0.2s ease-out }
 .slide li {position: relative; float: left }
 .slide li img {width: 100% }

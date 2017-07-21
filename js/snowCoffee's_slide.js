@@ -13,16 +13,16 @@
 		var slide = 0;		// 이미지 사이즈를 marginLeft 이동 값에 계속 더해줄 변수
 		var indexNow = 0;		// 현재 slide li의 인덱스를 담을 변수
 		var indexLast = $('#slideWrap .slide li:last-child').index(); // slide li의 마지막 index를 담을 변수
-		var imgWidth = '100%'; 	// slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
-		//var imgWidth = '800px'; 	// slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
+		var slideWidth = '100%'; 	// slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
+		//var slideWidth = '800px'; 	// slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
 		var slideTime = '3000'; // 자동 재생 시간
 
 	/*	리셋	*/
 
 		$(window).load(function(){
-			$sWrap.width(imgWidth);		// $('#slideWrap')의 width 값을 imgWidth 값으로 담는다.
-			$sLi.width($sInner.width());		// $('#slideWrap .slide li')
+			$sWrap.width(slideWidth).height($sLi.height());		// $('#slideWrap')의 width와 height 값을 slideWidth 값과 $sLi.height()값으로 으로 담는다.
 			$sWrapUl.width($sWrap.width()*(indexLast+1));	// ul.slide의 넓이 값을 slide li의 갯수만큼 넓히기
+			$sLi.width($sInner.width());		// $('#slideWrap .slide li')
 		});
 
 	/*	함수	*/
@@ -80,8 +80,10 @@
 			swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
 			  if(direction=="left"){
 					slideLeft();
+					stopInterval();
 				}else if(direction=="right"){
 					slideRight();
+					stopInterval();
 				};
 			},
 			//Default is 75px, set to 0 for demo so any distance triggers swipe
@@ -162,11 +164,10 @@
 		// 윈도우 리사이즈
 		$(window).resize(function(){
 			
-			if( imgWidth == '100%' ){
-				$sLi.width($sInner.width());
-				$sWrapUl.width($sWrap.width()*(indexLast+1)+200);
-				$sWrapUl.css('margin-left', -($sInner.width() * indexNow)+'px');
-				$sWrapUl.css('transition','margin-left 0s ease-out 0s');	// 리사이징 될 때 transition 시간 제거
+			if( slideWidth == '100%' ){
+				$sWrap.width(slideWidth).height($sLi.height());		// $('#slideWrap')의 width와 height 값을 slideWidth 값과 $sLi.height()값으로 으로 담는다.
+				$sWrapUl.width($sWrap.width()*(indexLast+1)).css({'margin-left' : -($sInner.width() * indexNow)+'px', 'transition' : 'margin-left 0s ease-out 0s' })
+				$sLi.width($sInner.width());		// $('#slideWrap .slide li')
 			};
 
 			stopInterval();
