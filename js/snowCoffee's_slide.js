@@ -3,7 +3,7 @@
 		
 	/*	변수	*/
 
-		// 각 요소를 담은 변수 선언
+		// 각 요소의 선택자를 담은 변수 선언
 		var $sWrap = $('#slideWrap');
 		var $sInner = $('#slideInner');
 		var $sWrapUl = $('.slide');
@@ -20,10 +20,12 @@
 	/*	리셋	*/
 
 		$(window).load(function(){
-			$sWrap.width(slideWidth).height($sLi.height());		// $('#slideWrap')의 width와 height 값을 slideWidth 값과 $sLi.height()값으로 으로 담는다.
-			$sWrapUl.width($sWrap.width()*(indexLast+1));	// ul.slide의 넓이 값을 slide li의 갯수만큼 넓히기
-			$sLi.width($sInner.width());		// $('#slideWrap .slide li')
+			$sLi.width($sInner.width());		// #slideInner의 넓이 값을 .slide li의 넓이값으로 담는다.
+			$sWrapUl.width($sWrap.width()*(indexLast+1));	// .slide의 넓이 값을 .slide li의 갯수만큼 넓히기
+			$sWrap.width(slideWidth).height($sLi.height());		// #slideWrap의 width와 height 값을 slideWidth 값과 $sLi.height()값으로 으로 담는다.
 		});
+		$sWrap.width(slideWidth).height($sLi.height());		// #slideWrap의 width와 height 값을 slideWidth 값과 $sLi.height()값으로 으로 담는다.
+		// 왜 .load() 의 안과 바깥에 하나씩 있어야 정상 작동 되는가? 
 
 	/*	함수	*/
 
@@ -75,7 +77,7 @@
 		$('.paging li').eq(indexNow).addClass('choice');
 
 		// 터치 이벤트
-		$sWrapUl.swipe( {
+		$sInner.swipe( {
 			//Generic swipe handler for all directions
 			swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
 			  if(direction=="left"){
@@ -165,9 +167,9 @@
 		$(window).resize(function(){
 			
 			if( slideWidth == '100%' ){
-				$sWrap.width(slideWidth).height($sLi.height());		// $('#slideWrap')의 width와 height 값을 slideWidth 값과 $sLi.height()값으로 으로 담는다.
 				$sWrapUl.width($sWrap.width()*(indexLast+1)).css({'margin-left' : -($sInner.width() * indexNow)+'px', 'transition' : 'margin-left 0s ease-out 0s' })
 				$sLi.width($sInner.width());		// $('#slideWrap .slide li')
+				$sWrap.width(slideWidth).height($sLi.height());		// $('#slideWrap')의 width와 height 값을 slideWidth 값과 $sLi.height()값으로 으로 담는다.
 			};
 
 			stopInterval();
