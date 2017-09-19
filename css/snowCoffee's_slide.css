@@ -1,27 +1,150 @@
-@charset "utf-8"; 
+@charset "utf-8";
+/*
+body, html {
+  width: 100%;
+  height: 100%
+}*/
 
-#slideWrap {position: relative; margin: 0 auto; overflow: hidden; width: 100% }
-.slide {transition: margin-left 0.2s ease-out; -moz-transition: margin-left 0.2s ease-out; -webkit-transition: margin-left 0.2s ease-out; -o-transition: margin-left 0.2s ease-out }
-.slide li {position: relative; float: left }
-.slide li img {width: 100% }
+#slideWrap {
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none /* Non-prefixed version, currently*/
+}
 
-.slideBtn {position: absolute; top: 50%; left: 0; margin-top: -25px; width: 100%; height: 50px; text-align: center }
-.slideBtn p {position: absolute; top: 0; width: 50px; height: 50px; line-height: 50px; vertical-align: middle; border-radius: 25px 25px; background-color: #e27575 }
-.slideBtn p a {display: block; width: 100%; height: 100%; font-size: 25px; color: #fff }
-.slideBtn p:hover { background-color:#ea67b2 }
-.slideBtn .btn_l {left: 0 }
-.slideBtn .btn_r {right: 0 }
+.slide {
+  box-sizing: content-box;
+  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  -o-transform: translate(0,0);
+  -ms-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  -ms-transition-property: -ms-transform;
+  transition-property: transform;
+  -webkit-transition-duration: 300ms;
+  -moz-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  -ms-transition-duration: 300ms;
+  transition-duration: 300ms
+}
 
-.autoBtn { position: absolute; bottom: 0; left: 0 }
-.autoBtn p { float: left; margin-right: 10px; width: 30px; height: 30px; line-height: 30px; text-align: center; background-color: #8b1549 }
-.autoBtn p a { display: block; width: 100%; height: 100%; color: #fff }
-.autoBtn p:hover, .autoBtn p.on { font-weight: bold; background-color: #d86296 }
+.slide.stop {
+  -webkit-transition-duration: 0ms;
+  -moz-transition-duration: 0ms;
+  -o-transition-duration: 0ms;
+  -ms-transition-duration: 0ms;
+  transition-duration: 0ms
+}
 
-.paging {width: 100%; height: 20px; margin-top: 20px; text-align: center }
-.paging ul {display: inline-block; width: auto }
-.paging li {width: 20px; height: 20px; float: left; margin: 0 5px; border-radius: 10px 10px; background-color: #ccc }
-.paging li:hover , .paging li.choice {background-color: #234563 }
-.paging li a {display: block; width: 100%; height: 100% }
+.slide li {
+  position: relative;
+  float: left
+}
 
-.slide:after, .paging ul:after {content: ""; display: block; clear: both }
-.slideBtn p, .autoBtn p, .paging li { transition: background-color 0.5s ease-out; -moz-transition: background-color 0.5s ease-out; -webkit-transition: background-color 0.5s ease-out; -o-transition: background-color 0.5s ease-out }
+.slide li img {
+  width: 100%
+}
+
+.slideBtn {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  margin-top: -25px;
+  width: 100%;
+  height: 50px;
+  text-align: center
+}
+
+.slideBtn div {
+  position: absolute;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  vertical-align: middle;
+  font-size: 15px;
+  background-color: rgba(117, 221, 226, 0.7);
+  color: #fff
+
+}
+
+
+.slideBtn div:hover {
+  background-color: rgba(2, 90, 250, 0.7)
+}
+
+.slideBtn .btn_l {
+  left: 0
+}
+
+.slideBtn .btn_r {
+  right: 0
+}
+
+.autoBtn {
+  position: absolute;
+  bottom: 0;
+  left: 0
+}
+
+.autoBtn div {
+  float: left;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  background-color: rgba(139, 21, 73, 0.7);
+  color: #fff
+}
+
+.autoBtn div:hover, .autoBtn div.on {
+  font-weight: bold;
+  background-color: rgba(216, 98, 150, 0.7)
+}
+
+.paging {
+  margin-top: 20px;
+  text-align: center
+}
+
+.paging ul {
+  display: inline-block;
+  width: auto;
+  text-align: center
+}
+
+.paging li {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin: 0 5px;
+  border-radius: 10px 10px;
+  background-color: #ccc
+}
+
+.paging li:hover, .paging li.choice {
+  background-color: #234563
+}
+
+.slide:after, .paging ul:after {
+  content: "";
+  display: block;
+  clear: both
+}
+
+.slideBtn div, .autoBtn div, .paging li {
+  cursor: pointer;
+  transition: background-color 0.3s ease-out;
+  -moz-transition: background-color 0.3s ease-out;
+  -webkit-transition: background-color 0.3s ease-out;
+  -o-transition: background-color 0.3s ease-out;
+}
