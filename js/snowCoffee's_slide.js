@@ -1,201 +1,275 @@
-(function($) {
-  $.snowCoffee = function() {
+(function($){
 
-/*	변수	*/
+  "use strict";
 
-    // 각 요소의 선택자
-    var $sWrap = $('#slide_wrap'),
+  $.fn.snowCoffee = function(options){
+
+    var defaults = $.extend({
+      slideWidth: '100%',
+      slideTime: 350,
+      autoPlayTime: 2000,
+      autoPlay: false,
+      loop: false
+    }, options);
+
+    // defaults
+    var options = {
+      slideWidth: defaults.slideWidth,
+      slideTime: defaults.slideTime,
+      autoPlayTime: defaults.autoPlayTime,
+      autoPlay: defaults.autoPlay,
+      loop: defaults.loop
+    };
+
+   // selectors
+    var $sWrap = $('.slide_wrap'),
         $slide = $('.slide'),
         $sLi = $('.slide li'),
+        $paging = $('.paging'),
 
-        // slide 관련
-        indexNow = 0, // 현재 slide li의 인덱스를 담을 변수
-        indexLast = $sLi.last().index(), // slide li의 마지막 index를 담을 변수
-        // slideWidth = '100%', // slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
-        slideWidth = '500px', // slide li 에 있는 이미지의 width값을 변수에, 혹은 특정 사이즈
-        slideTime = '3000', // 자동 slide 시간
+        $btnPrev = $('.btn_l'),
+        $btnNext = $('.btn_r'),
 
-        // 셋인터벌 관련
+        $btnStart = $('.btn_start'),
+        $btnPause = $('.btn_pause'),
+
+   // Slide-related properties
+        indexNow = 0,
+        indexLast = $sLi.length - 1,
+
         toggle = false,
-        handle = null;
+        handle = null,
+        doubleClickFlag = false;
 
-/*	함수	*/
+/* reset */
 
-    // size reset
-    function reset() {
-      $sLi.width($sWrap.width());
-      $slide.width($sLi.width() * (indexLast + 1)); // .slide의 넓이 값을 .slide li의 갯수만큼 넓히기
-      $sWrap.width(slideWidth).height($sLi.height());
-    };
-
-    // slide 이전 이미지
-    function slidePrev() {
-      if (indexNow >= indexLast) {
-        indexNow = 0;
-      } else {
-        indexNow++;
+    var reset = function(){
+      // slide element size reset
+      $sWrap[0].style.width = defaults.slideWidth;
+      for (var i = 0; i < (indexLast + 1); i++){
+        $sLi[i].style.width = $sWrap[0].offsetWidth + 'px';
       };
-      move()
+      $sWrap[0].style.height = $sLi[0].offsetHeight + 'px';
+      $slide[0].style.width = $sLi[0].offsetWidth * (indexLast + 1) + 'px';
     };
 
-    // slide 다음 이미지
-    function slideNext() {
-      if (indexNow <= 0) {
-        indexNow = indexLast;
-      } else {
-        indexNow--;
-      };
-      move();
+    // paging auto add
+    $paging.append('<ul></ul>');
+    for (var ap = 0; ap <= indexLast; ap++){
+      $paging.children().append('<li></li>');
+    };
+    var $pLi = $('.paging li');
+
+    // slide li add clone
+    if(defaults.loop){
+      indexNow++;
+      $sLi.eq(indexLast).clone().prependTo($slide).addClass('cloned');
+      $sLi.eq(0).clone().appendTo($slide).addClass('cloned');
     };
 
-    // slide 이동 함수
-    function move() {
-      $slide.css({
-        transform: 'translate3d(-' + ($sLi.width() * indexNow) + 'px, 0, 0)'
-      });
-      paging();
-    };
+/* function */
 
-    // paging
-    function paging() {
-      $sLi.removeClass('active').eq(indexNow).addClass('active');
-      $('.paging li').removeClass('choice').eq(indexNow).addClass('choice');
-      pagingHasClass();
-    };
-
-    // paging의 choice 클래스가 특정 li에 왔을 때 조건문 실행
-    function pagingHasClass() {
-      if ($('.paging li').eq(2).hasClass('choice') == true) {
-        //console.log(1)
-      };
-    };
-
-    //슬라이드 개수 만큼 페이징 자동 추가
-    $('.paging').append('<ul></ul>')
-    for (var i = 0; i <= indexLast; i++) {
-      $('.paging ul').append('<li></li>');
-    };
-    $('.paging li').eq(indexNow).addClass('choice');
-
-
-/*	리셋	*/
-
-    window.onload = function() {
-      $sWrap.width(slideWidth).height($sLi.height());
-      reset();
-      startInterval();
-    };
-
-
-/*	이벤트	*/
-
-    // ◀ ▶ 버튼
-    $('.slideBtn div').click(function(e) {
-      if ($(this).hasClass('btn_l') == true) {
-        slideNext();
-      } else {
-        slidePrev();
-      }
-      stopInterval();
-      e.preventDefault();
-    });
-
-    // paging li 클릭 했을 때 이벤트
-    $('.paging li').click(function() {
-      indexNow = $(this).index();
-      move();
-      stopInterval();
-    });
-
-    // 자동 재생 / 정지 버튼
-    $('.autoBtn div').click(function() {
-      if ($(this).hasClass('btnStart') == true) {
-        startInterval();
-      } else {
-        stopInterval();
-      };
-    });
-
-    function startInterval() {
-      if (handle == null) {
-        handle = setInterval(function() {
-          toggleSlide();
-        }, slideTime);
-      };
-      $('.btnPause').removeClass('on');
-      $('.btnStart').addClass('on');
-    };
-
-    function stopInterval() {
-      clearInterval(handle);
-      $('.btnStart').removeClass('on');
-      $('.btnPause').addClass('on');
-      handle = null;
-    };
-
-    function toggleSlide() {
-      slidePrev();
-      toggle = !toggle;
-    };
-
-    // 터치 이벤트
-    $slide.swipe({
-      //Generic swipe handler for all directions
-      swipe: function(event, direction, distance, duration, fingerCount, fingerData) {
-        if (direction == "left") {
-          slidePrev();
-          stopInterval();
-        } else if (direction == "right") {
-          slideNext();
-          stopInterval();
+    var myObject = {
+      _duraOn: function(){
+        $slide[0].style.transitionDuration = defaults.slideTime+'ms';
+      },
+      _duraOff: function(){
+        $slide[0].style.transitionDuration = '0ms';
+      },
+      _slidePrev: function(){
+        myObject._duraOn();
+        if(indexNow <= 0){
+          indexNow = indexLast;
+        } else {
+          indexNow--;
+        };
+        myObject._move();
+      },
+      _slideNext: function(){
+        myObject._duraOn();
+        if(indexNow >= indexLast){
+          indexNow = 0;
+        } else {
+          indexNow++;
+        };
+        myObject._move();
+      },
+      // paging, slide addClass
+      _paging: function(){
+        $sLi.removeClass('active').eq(indexNow).addClass('active');
+        if(defaults.loop){
+          $pLi.removeClass('choice').eq(indexNow-1).addClass('choice');
+        }else{
+          $pLi.removeClass('choice').eq(indexNow).addClass('choice');
         };
       },
-      //Default is 75px, set to 0 for demo so any distance triggers swipe
-      threshold: 0
-    });
-
-    // transition end
-    $slide.on("transitionend webkittransitionend otransitionend mstransitionend", function() {
-      if (indexNow == 0) {
-        console.log(1)
-      }
-    });
-
-
-/* 리사이징 */
-
-    // 리사이징 후의 이벤트를 위한 함수
-    var waitForFinalEvent = (function() {
-      var timers = {};
-      return function(callback, ms, uniqueId) {
-        /*if (!uniqueId) {
-        	uniqueId = "Don't call this twice without a uniqueId"; //고유한 ID없이 두 번이 호출하지 마십시오
-        }*/
-        if (timers[uniqueId]) {
-          clearTimeout(timers[uniqueId]);
+      _infiniteLoop: function(){
+        if(indexNow >= indexLast){
+          indexNow = 1;
+          myObject._move();
+        }else if(indexNow <= 0){
+          indexNow = indexLast-1;
+          myObject._move();
+        };
+      },
+      // infinite Loop IE8- issue
+      _infineteLoopIe: function(){
+        $slide.css('left',- ($sLi.width() * indexNow) + 'px');
+      },
+      // translate motion or ie8- animate motion
+      _slideMotion: function(){
+        if($sLi[0].classList){
+          $slide[0].style.transform = 'translate(-' + ($sLi.eq(indexNow).width() * indexNow) + 'px, 0)';
+        }else{
+          $slide.animate({
+            left: - ($sLi.width() * indexNow) + 'px'
+          }, defaults.slideTime, function(){
+            doubleClickFlag = false;
+            if(defaults.loop){
+              if(indexNow >= indexLast){
+                indexNow = 1;
+                myObject._infineteLoopIe();
+              }else if(indexNow <= 0){
+                indexNow = indexLast-1;
+                myObject._infineteLoopIe();
+              };
+              myObject._paging();
+            };
+          });
+        }; // else
+      },
+      _move: function(){
+        myObject._slideMotion();
+        myObject._paging();
+      },
+      _toggleSlide: function(){
+        myObject._slideNext();
+        toggle = !toggle;
+      },
+      _intervalStart: function(){
+        if(handle == null){
+          handle = setInterval(function(){
+            myObject._toggleSlide();
+          }, defaults.autoPlayTime);
+        };
+        $btnPause.removeClass('on');
+        $btnStart.addClass('on');
+      },
+      _intervalStop: function(){
+        clearInterval(handle);
+        $btnStart.removeClass('on');
+        $btnPause.addClass('on');
+        handle = null;
+      },
+      _autoSlide: function(){
+        if(defaults.autoPlay){
+          myObject._intervalStart();
+        }else{
+          myObject._intervalStop();
         }
-        timers[uniqueId] = setTimeout(callback, ms);
-      };
-    })();
+      },
+      // Preventing multiple clicks
+      _doubleClickCheck: function(){
+        if(doubleClickFlag){
+          return doubleClickFlag;
+        }else{
+          doubleClickFlag = true;
+          return false;
+        };
+      }
+    };
+    // myObject
 
-    // 윈도우 리사이즈
-    $(window).resize(function() {
 
-      if (slideWidth == '100%') {
-        reset();
-        $slide.addClass('stop').css({
-          transform: 'translate3d(-' + ($sLi.width() * indexNow) + 'px, 0, 0)'
-        });
-      };
-      stopInterval();
-
-      // 리사이징 끝난 후 이벤트
-      waitForFinalEvent(function() {
-        $slide.removeClass('stop'); // 리사이징 되고난 후에 transition 시간 생성
-        startInterval();
-      }, 10);
-
+    // touch event
+    $slide.swipe({
+      swipe: function(event, direction, distance, duration, fingerCount, fingerData){
+        if(myObject._doubleClickCheck()){
+         return;
+        };
+        if(direction == "left"){
+          myObject._slideNext();
+          myObject._intervalStop();
+        } else if(direction == "right"){
+          myObject._slidePrev();
+          myObject._intervalStop();
+        };
+      },
+      threshold: 75
     });
 
-  }; //snowCoffee
+/* click event */
+
+    // ◀ ▶ buttons
+    $btnPrev.click(function(){
+      if(myObject._doubleClickCheck()){
+       return;
+      };
+      myObject._slidePrev();
+      myObject._intervalStop();
+    });
+    $btnNext.click(function(){
+      if(myObject._doubleClickCheck()){
+       return;
+      };
+      myObject._slideNext();
+      myObject._intervalStop();
+    });
+
+    // Autoplay / Auto play stop
+    $btnStart.click(function(){
+      myObject._intervalStart();
+    });
+    $btnPause.click(function(){
+      myObject._intervalStop();
+    });
+
+    // paging li Click event
+    $pLi.click(function(){
+      if(defaults.loop){
+        indexNow = $(this).index()+1;
+      }else{
+        indexNow = $(this).index();
+      };
+      myObject._duraOn();
+      myObject._move();
+      myObject._intervalStop();
+    });
+
+/* resize event */
+
+    // window resize
+    $(window).resize(function(){
+      if(defaults.slideWidth == '100%'){
+        myObject._duraOff();
+        reset();
+        myObject._slideMotion();
+        myObject._intervalStop();
+      };
+    });
+
+/* onload */
+
+    $(window).load(function(){
+      if(defaults.loop){
+        myObject._duraOff();
+        $sLi = $('.slide li');
+        indexLast = $sLi.length - 1;
+      };
+      reset();
+      myObject._paging();
+      myObject._move();
+      myObject._autoSlide();
+    });
+
+    // callback, transition end
+    $slide.on("transitionend webkittransitionend otransitionend mstransitionend", function(){
+      doubleClickFlag = false;
+      myObject._duraOff();
+      if(defaults.loop){
+        myObject._infiniteLoop();
+      };
+    });
+
+  }; // snowCoffee
 }(jQuery));

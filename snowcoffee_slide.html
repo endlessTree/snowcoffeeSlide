@@ -13,26 +13,27 @@
 
 	<div id="wrap">
 
-		<div id="slide_wrap">
+		<div class="slide_wrap">
+			<h1></h1>
 			<ul class="slide">
 				<li><img src="images/1.jpg" alt="" /></li>
 				<li><img src="images/2.jpg" alt="" /></li>
 				<li><img src="images/3.jpg" alt="" /></li>
 				<li><img src="images/4.jpg" alt="" /></li>
 				<li><img src="images/5.jpg" alt="" /></li>
-				<li><img src="images/1.jpg" alt="" /></li>
-				<li><img src="images/2.jpg" alt="" /></li>
-				<li><img src="images/3.jpg" alt="" /></li>
-				<li><img src="images/4.jpg" alt="" /></li>
-				<li><img src="images/5.jpg" alt="" /></li>
+				<li><img src="images/6.jpg" alt="" /></li>
+				<li><img src="images/7.jpg" alt="" /></li>
+				<li><img src="images/8.jpg" alt="" /></li>
+				<li><img src="images/9.jpg" alt="" /></li>
+				<li><img src="images/10.jpg" alt="" /></li>
 			</ul>
-			<div class="slideBtn">
+			<div class="btn_arrow_wrap">
 				<div class="btn_l">◀</div>
 				<div class="btn_r">▶</div>
 			</div>
-			<div class="autoBtn">
-				<div class="btnStart">▷</div>
-				<div class="btnPause">∥</div>
+			<div class="btn_auto_wrap">
+				<div class="btn_start">▷</div>
+				<div class="btn_pause">∥</div>
 			</div>
 		</div>
 		<div class="paging"></div>
@@ -41,11 +42,16 @@
 	<!-- wrap -->
 
 	<script src="js/jquery-1.12.3.min.js"></script>
-	<script src="js/snowCoffee's_slide.js"></script>
-	<script src="js/jquery.touchSwipe.js"></script>
+	<script src="js/jquery.touchSwipe.min.js"></script>
+	<script src="js/jquery.snowCoffee_slide-loop1.js"></script>
+
 	<script type="text/javascript">
-		$(function() {
-			$.snowCoffee();
+		$('.slide_wrap').snowCoffee({
+			slideWidth: '100%',
+			// slideTime: 350,
+			// autoPlayTime: 2000,
+			autoPlay: true,
+			loop: true
 		});
 	</script>
 </body>
